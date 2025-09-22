@@ -30,6 +30,12 @@ const Agence = () => {
       scrollTrigger: {
         trigger: imageDiv.current,
         pin: true,
+        pinSpacing: true,
+        pinReparent: true,
+        pinType: "transform",
+        scrub: 1,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
         start: "top 27%",
         end: "top -140%",
         onUpdate: (self) => {
@@ -56,8 +62,8 @@ const Agence = () => {
           />
         </div>
 
-        <div className="font-[font-2] relative">
-          <div className="mt-[52vh]">
+        <div className="font-[font-2] relative py-1">
+          <div className="mt-[52vh] ">
             <h1 className="text-[19vw] leading-[17vw] font-bold text-center">
               SEVEN7Y <br />
               TWO
