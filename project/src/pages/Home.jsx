@@ -1,9 +1,20 @@
-import React from 'react'
+import React from "react";
+import Video from "../components/home/Video";
+import HeroText from "../components/home/HeroText";
+import HeroBottomtext from "../components/home/HeroBottomtext";
 
 const Home = () => {
   return (
-    <div>Home</div>
-  )
-}
+    <div>
+      <div className="h-screen fixed w-screen">
+        <Video />
+      </div>
+      <div className="h-screen w-screen relative text-white">
+        <HeroText />
+        <HeroBottomtext />
+      </div>
+    </div>
+  );
+};
 
-export default Home
+export default Home;
