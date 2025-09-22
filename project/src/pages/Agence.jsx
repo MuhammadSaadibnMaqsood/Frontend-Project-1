@@ -1,11 +1,55 @@
-import React from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger"; // 👈 ye import lazmi hai
+import React, { useRef } from "react";
+
+const imagesArray = [
+  "https://k72.ca/uploads/teamMembers/MEL_480X640-480x640.jpg",
+  "https://k72.ca/uploads/teamMembers/joel_480X640_3-480x640.jpg",
+  "https://k72.ca/uploads/teamMembers/Olivier_480x640-480x640.jpg",
+  "https://k72.ca/uploads/teamMembers/Lawrence_480x640-480x640.jpg",
+  "https://k72.ca/uploads/teamMembers/HugoJoseph_480x640-480x640.jpg",
+  "https://k72.ca/uploads/teamMembers/ChantalG_480x640-480x640.jpg",
+  "https://k72.ca/uploads/teamMembers/ChantalG_480x640-480x640.jpg",
+  "https://k72.ca/uploads/teamMembers/SophieA_480x640-480x640.jpg",
+  "https://k72.ca/uploads/teamMembers/Claire_480x640-480x640.jpg",
+  "https://k72.ca/uploads/teamMembers/Michele_480X640-480x640.jpg",
+  "https://k72.ca/uploads/teamMembers/CAMILLE_480X640_2-480x640.jpg",
+  "https://k72.ca/uploads/teamMembers/MAXIME_480X640_2-480x640.jpg",
+  "https://k72.ca/uploads/teamMembers/MEGGIE_480X640_2-480x640.jpg",
+  "https://k72.ca/uploads/teamMembers/joel_480X640_3-480x640.jpg",
+];
 
 const Agence = () => {
+  const imageDiv = useRef(null);
+  const image = useRef(null);
+
+  useGSAP(function () {
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.to(imageDiv.current, {
+      scrollTrigger: {
+        trigger: imageDiv.current,
+        pin: true,
+        start: "top 27%",
+        end: "top -140%",
+        onUpdate: (self) => {
+          let index = Math.floor(self.progress * imagesArray.length);
+          if (index >= imagesArray.length) index = imagesArray.length - 1;
+          image.current.src = imagesArray[index];
+        },
+      },
+    });
+  });
+
   return (
     <div>
       <div className="section1">
-        <div className="h-[20vw] w-[15vw] absolute top-40 left-[30vw] rounded-4xl overflow-hidden">
+        <div
+          ref={imageDiv}
+          className="h-[20vw] w-[15vw] absolute top-40 left-[30vw] rounded-4xl overflow-hidden"
+        >
           <img
+            ref={image}
             className="w-full h-full object-cover"
             src="http://k72.ca/uploads/teamMembers/Carl_480x640-480x640.jpg"
             alt=""
