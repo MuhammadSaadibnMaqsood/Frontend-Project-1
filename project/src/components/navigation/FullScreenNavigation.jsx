@@ -8,68 +8,101 @@ const FullScreenNavigation = () => {
   const fullScreenNavLink = useRef(null);
   const fullNav = useRef(null);
   const [navOpen, setnavOpen] = useContext(navbarContext);
+  console.log(navOpen);
 
-  function gsapAnimation() {
-    const tl = gsap.timeline();
-    tl.from(".stair", {
-      delay: 0.5,
-      height: 0,
-      stagger: {
-        amount: -0.25,
-      },
-    });
-    tl.from(".navLinks", {
-      opacity: 0,
-    });
+  const tl = useRef(null);
 
-    tl.from(".link", {
-      opacity: 0,
-      rotateX: 90,
-      stagger: {
-        amount: 0.25,
-      },
-    });
-  }
-  function gsapAnimationReverse() {
-    const tl = gsap.timeline();
-    tl.to(".link", {
-      opacity: 0,
-      rotateX: 90,
-      stagger: {
-        amount: 0.25,
-      },
-    });
-    tl.to(".stair", {
-      delay: 0.5,
-      height: 0,
-      stagger: {
-        amount: -0.25,
-      },
-    });
-    tl.to(".navLinks", {
-      opacity: 0,
-    });
-     gsap.to("#fullScreenNav", {
-        display: "none",
+  useGSAP(() => {
+    tl.current = gsap.timeline({ paused: true });
+
+    // Timeline steps
+    tl.current
+      .from(".stair", {
+        height: 0,
+        stagger: { amount: -0.25 },
+      })
+      .from(".navLinks", { opacity: 0 })
+      .from(".link", {
+        opacity: 0,
+        rotateX: 90,
+        stagger: { amount: 0.25 },
       });
-  }
+
+    // Pehle hidden rakho
+    gsap.set(fullNav.current, { display: "none" });
+  }, []);
 
   useGSAP(() => {
     if (navOpen) {
-      gsap.to(fullNav.current, {
-        display: "block",
-      });
-      gsapAnimation();
+      gsap.set(fullNav.current, { display: "block" });
+      tl.current.play(0); // play from start
     } else {
-     
-      gsapAnimationReverse();
+      tl.current.reverse().eventCallback("onReverseComplete", () => {
+        gsap.set(fullNav.current, { display: "none" });
+      });
     }
   }, [navOpen]);
+
+  // function gsapAnimation() {
+  //   const tl = gsap.timeline();
+  //   tl.from(".stair", {
+  //     delay: 0.5,
+  //     height: 0,
+  //     stagger: {
+  //       amount: -0.25,
+  //     },
+  //   });
+  //   tl.from(".navLinks", {
+  //     opacity: 0,
+  //   });
+
+  //   tl.from(".link", {
+  //     opacity: 0,
+  //     rotateX: 90,
+  //     stagger: {
+  //       amount: 0.25,
+  //     },
+  //   });
+  // }
+  // function gsapAnimationReverse() {
+  //   const tl = gsap.timeline();
+  //   tl.to(".link", {
+  //     opacity: 0,
+  //     rotateX: 90,
+  //     stagger: {
+  //       amount: 0.25,
+  //     },
+  //   });
+  //   tl.to(".stair", {
+  //     delay: 0.5,
+  //     height: 0,
+  //     stagger: {
+  //       amount: -0.25,
+  //     },
+  //   });
+  //   tl.to(".navLinks", {
+  //     opacity: 0,
+  //   });
+  //   gsap.to("#fullScreenNav", {
+  //     display: "none",
+  //   });
+  // }
+
+  // useGSAP(() => {
+  //   if (navOpen) {
+  //     gsap.to(fullNav.current, {
+  //       display: "block",
+  //     });
+  //     gsapAnimation();
+  //   } else {
+  //     gsapAnimationReverse();
+  //   }
+  // }, [navOpen]);
   return (
     <div
       id="fullScreenNav"
       ref={fullNav}
-      className="h-screen z-50 w-full absolute overflow-x-hidden  text-white bg-black"
+      className="h-screen z-50 w-full absolute overflow-x-hidden  text-white "
     >
       <div>
         <div ref={div} className="fixed w-full h-screen">
